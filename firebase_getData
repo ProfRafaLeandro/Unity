@@ -1,0 +1,28 @@
+using Firebase.Extensions;                  //have to call to use Firebase
+
+public class FirebaseDatabaseManager : MonoBehaviour
+{
+    string userID;                        //will store a identifier for the pc
+    DatabaseReference reference;          //will access the database
+
+    void Start()
+    {
+        userID = SystemInfo.deviceUniqueIdentifier;
+        reference = FirebaseDatabase.DefaultInstance.RootReference;
+    }
+
+    public void ReadDatabase()
+    {
+        reference.Child("users").Child(userID).Child("name").GetValueAsync().ContinueWithOnMainThread(task =>           //get the value and...
+        {
+            if (task.IsFaulted)                                                    //check if was succeded to get the value and if is not ...
+            {
+                Debug.Log(task.Exception.Message);
+            }
+            else if (task.IsCompleted)                                            //check if was succeded to get the value and if is ...
+            {
+                DataSnapshot snapshot = task.Result;                              //take the data in that time
+                Debug.Log("Name: " + snapshot.Value);                              // show the data in a Debug
+            }
+        });
+    }
