@@ -1,0 +1,19 @@
+using Firebase.Extensions;                              //call to use Firebase inside script
+
+public class FirebaseDatabaseManager : MonoBehaviour
+{
+    string userID;                                      //will register an identifier of the machine
+    DatabaseReference reference;                        //will call the database
+
+    void Start()
+    {
+        userID = SystemInfo.deviceUniqueIdentifier;
+        reference = FirebaseDatabase.DefaultInstance.RootReference;
+    }
+
+    public void CreateNewUser()
+    {
+        reference.Child("users").Child(userID).Child("name").SetValueAsync("Novo Rafa"); //will create a data inside users, inside the userID, inside name and add the Novo Rafa value
+        reference.Child("users").Child(userID).Child("score").SetValueAsync("100");      //will create a data inside users, inside the userID, inside score and add the 100 value
+        Debug.Log("New user created.");                                                  //Debug just to show
+    }
