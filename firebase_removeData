@@ -1,0 +1,18 @@
+using Firebase.Extensions;                                        //needed for use Firebase
+
+public class FirebaseDatabaseManager : MonoBehaviour
+{
+    string userID;
+    DatabaseReference reference;                                  //needed for access the database
+
+    void Start()
+    {
+        userID = SystemInfo.deviceUniqueIdentifier;
+        reference = FirebaseDatabase.DefaultInstance.RootReference;    //call the database
+    }
+
+    public void RemoveUserWithUserID()
+    {
+        reference.Child("users").Child(userID).RemoveValueAsync(); //remove data
+        Debug.Log("user removed");
+    }
